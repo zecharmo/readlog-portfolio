@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReadLog — PM Discovery Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink: #1a1a18;
+      --paper: #f5f2eb;
+      --cream: #ede9df;
+      --amber: #c8873a;
+      --amber-light: #f0d4ae;
+      --amber-pale: #faf4ea;
+      --sage: #6b7c6e;
+      --sage-light: #d4ddd5;
+      --rust: #9c4a2b;
+      --muted: #7a7670;
+      --border: #ddd8cc;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--paper);
+      color: var(--ink);
+      font-size: 15px;
+      line-height: 1.65;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--ink);
+      color: var(--paper);
+      padding: 56px 40px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,135,58,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    header::after {
+      content: '"';
+      position: absolute;
+      bottom: -20px; right: 40px;
+      font-family: 'Playfair Display', serif;
+      font-size: 220px;
+      color: rgba(255,255,255,0.04);
+      line-height: 1;
+      pointer-events: none;
+    }
+
+    .header-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 24px;
+      height: 1px;
+      background: var(--amber);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 5vw, 52px);
+      font-weight: 600;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
+      color: var(--paper);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--amber);
+    }
+
+    .header-desc {
+      font-size: 15px;
+      color: rgba(245,242,235,0.65);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+    }
+
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+    }
+
+    .meta-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: rgba(245,242,235,0.5);
+      letter-spacing: 0.05em;
+    }
+
+    .meta-pill .dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      opacity: 0.7;
+    }
+
+    /* ── CONTEXT BAND ── */
+    .context-band {
+      background: var(--amber-pale);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 40px;
+    }
+
+    .context-inner {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+    }
+
+    .context-item h3 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 6px;
+    }
+
+    .context-item p {
+      font-size: 13px;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+
+    /* ── MAIN ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 40px 80px;
+    }
+
+    /* ── SECTION HEADER ── */
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── USE CASE CARDS ── */
+    .use-case {
+      margin-bottom: 64px;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .uc-header {
+      padding: 28px 32px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+    }
+
+    .uc-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: var(--amber-light);
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: -4px;
+    }
+
+    .uc-header-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+
+    .uc-header-text p {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .uc-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+
+    .tag {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 3px 8px;
+      border-radius: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    .tag-tool { background: var(--sage-light); color: var(--sage); }
+    .tag-source { background: var(--amber-light); color: #7a4a1a; }
+    .tag-output { background: #e8e0f0; color: #5a4070; }
+
+    /* ── WORKFLOW ── */
+    .workflow {
+      padding: 24px 32px;
+      border-bottom: 1px solid var(--border);
+      background: white;
+    }
+
+    .workflow h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+
+    .workflow-steps {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0;
+    }
+
+    .wstep {
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .wstep-box {
+      background: var(--amber-pale);
+      border: 1px solid var(--amber-light);
+      border-radius: 3px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    .wstep-arrow {
+      font-size: 14px;
+      color: var(--amber);
+      padding: 0 8px;
+      flex-shrink: 0;
+    }
+
+    /* ── PANELS ── */
+    .panels {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+
+    .panel {
+      padding: 24px 28px;
+    }
+
+    .panel:first-child {
+      border-right: 1px solid var(--border);
+    }
+
+    .panel h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .panel h4 .badge {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+    }
+
+    .badge-input { background: var(--sage); }
+    .badge-output { background: var(--amber); }
+
+    /* ── REVIEW CARDS ── */
+    .review-card {
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      font-size: 12.5px;
+      line-height: 1.55;
+      color: var(--ink);
+    }
+
+    .review-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+
+    .review-source {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    .stars {
+      color: var(--amber);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    /* ── INSIGHT OUTPUT ── */
+    .insight-block {
+      background: var(--ink);
+      color: var(--paper);
+      border-radius: 3px;
+      padding: 20px;
+      margin-bottom: 10px;
+    }
+
+    .insight-block h5 {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 10px;
+    }
+
+    .insight-block p {
+      font-size: 13px;
+      line-height: 1.6;
+      color: rgba(245,242,235,0.85);
+    }
+
+    .theme-list {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .theme-list li {
+      font-size: 12.5px;
+      color: rgba(245,242,235,0.8);
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .theme-list li:last-child { border-bottom: none; }
+
+    .theme-list li::before {
+      content: '→';
+      color: var(--amber);
+      font-size: 11px;
+      flex-shrink: 0;
+    }
+
+    /* ── OPPORTUNITY TABLE ── */
+    .opp-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12.5px;
+    }
+
+    .opp-table th {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: left;
+      padding: 8px 12px;
+      border-bottom: 1px solid var(--border);
+      background: var(--cream);
+    }
+
+    .opp-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+
+    .opp-table tr:last-child td { border-bottom: none; }
+
+    .priority-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .p-high { background: #ffe0d4; color: var(--rust); }
+    .p-med  { background: var(--amber-light); color: #7a4a1a; }
+    .p-low  { background: var(--sage-light); color: var(--sage); }
+
+    /* ── PIPELINE DIAGRAM ── */
+    .pipeline {
+      padding: 24px 32px;
+    }
+
+    .pipeline-row {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin-bottom: 12px;
+    }
+
+    .pipeline-node {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 14px 16px;
+      background: white;
+    }
+
+    .pipeline-node .node-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
+    .pipeline-node .node-value {
+      font-size: 13px;
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    .pipeline-node.active {
+      background: var(--ink);
+      border-color: var(--ink);
+    }
+
+    .pipeline-node.active .node-label { color: var(--amber); }
+    .pipeline-node.active .node-value { color: var(--paper); }
+
+    .pipeline-connector {
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      color: var(--amber);
+      font-size: 16px;
+    }
+
+    /* ── SPEC BLOCK ── */
+    .spec-block {
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .spec-header {
+      background: var(--cream);
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .spec-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .spec-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+    }
+
+    .spec-body {
+      padding: 16px;
+      font-size: 12.5px;
+      line-height: 1.6;
+      color: var(--ink);
+    }
+
+    .spec-body strong {
+      font-weight: 600;
+      color: var(--ink);
+    }
+
+    .spec-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 6px;
+      align-items: baseline;
+    }
+
+    .spec-row-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      min-width: 80px;
+      flex-shrink: 0;
+      text-transform: uppercase;
+    }
+
+    /* ── TRY IT ── */
+    .try-it {
+      background: var(--ink);
+      border-radius: 3px;
+      padding: 32px;
+      margin-top: 64px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .try-it::before {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,135,58,0.12) 0%, transparent 70%);
+    }
+
+    .try-it h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--paper);
+      margin-bottom: 8px;
+    }
+
+    .try-it .sub {
+      font-size: 13px;
+      color: rgba(245,242,235,0.5);
+      margin-bottom: 28px;
+    }
+
+    .try-it-tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .try-tab {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      padding: 7px 14px;
+      border-radius: 2px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: rgba(245,242,235,0.5);
+      cursor: pointer;
+      letter-spacing: 0.05em;
+      transition: all 0.15s;
+    }
+
+    .try-tab:hover {
+      border-color: rgba(200,135,58,0.4);
+      color: var(--amber);
+    }
+
+    .try-tab.active {
+      background: rgba(200,135,58,0.15);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 3px;
+      color: var(--paper);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 16px;
+      resize: vertical;
+      min-height: 140px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    textarea::placeholder { color: rgba(245,242,235,0.2); }
+    textarea:focus { border-color: rgba(200,135,58,0.5); }
+
+    .try-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 12px;
+    }
+
+    .runs-left {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: rgba(245,242,235,0.35);
+    }
+
+    .btn-run {
+      background: var(--amber);
+      color: var(--ink);
+      border: none;
+      border-radius: 2px;
+      padding: 10px 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+
+    .btn-run:hover { opacity: 0.85; }
+    .btn-run:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .try-output {
+      margin-top: 20px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 3px;
+      padding: 20px;
+      font-size: 13px;
+      color: rgba(245,242,235,0.8);
+      line-height: 1.7;
+      min-height: 80px;
+      white-space: pre-wrap;
+      display: none;
+    }
+
+    .try-output.visible { display: block; }
+
+    .loading-dots {
+      display: inline-flex;
+      gap: 4px;
+      align-items: center;
+    }
+
+    .loading-dots span {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--amber);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes pulse {
+      0%, 80%, 100% { opacity: 0.2; transform: scale(0.8); }
+      40% { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 24px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 640px) {
+      header, .context-band, main { padding-left: 20px; padding-right: 20px; }
+      .panels { grid-template-columns: 1fr; }
+      .panel:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+      .workflow-steps { gap: 4px; }
+      .wstep-box { font-size: 11px; padding: 6px 10px; }
+      footer { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-inner">
+    <div class="eyebrow">PM Discovery Portfolio · Molly Rankin</div>
+    <h1>AI-Powered User Research<br/>for <em>ReadLog</em></h1>
+    <p class="header-desc">
+      Three discovery workflows that surface unmet needs from public competitor feedback —
+      from raw App Store reviews to a prioritized product opportunity brief.
+      Built to demonstrate how modern PMs use AI to compress the signal-to-decision loop.
+    </p>
+    <div class="header-meta">
+      <span class="meta-pill"><span class="dot"></span> Product: ReadLog PWA</span>
+      <span class="meta-pill"><span class="dot"></span> Sources: App Store · Reddit</span>
+      <span class="meta-pill"><span class="dot"></span> Competitors: Goodreads · StoryGraph</span>
+      <span class="meta-pill"><span class="dot"></span> Data: Synthetic</span>
+    </div>
+  </div>
+</header>
+
+<!-- ── CONTEXT BAND ── -->
+<div class="context-band">
+  <div class="context-inner">
+    <div class="context-item">
+      <h3>Product</h3>
+      <p>ReadLog — a private reading journal for reflective readers who annotate ideas, not metrics.</p>
+    </div>
+    <div class="context-item">
+      <h3>Target Persona</h3>
+      <p>Deep solo readers who highlight, reflect, and connect ideas across books. Privacy-first.</p>
+    </div>
+    <div class="context-item">
+      <h3>Research Question</h3>
+      <p>What unmet needs do Goodreads and StoryGraph users express that ReadLog could address?</p>
+    </div>
+    <div class="context-item">
+      <h3>Methodology</h3>
+      <p>AI-synthesized competitive review mining across App Store reviews and Reddit threads.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── MAIN ── -->
+<main>
+
+  <div class="section-label">Three Discovery Use Cases</div>
+
+  <!-- ══ USE CASE 1 ══ -->
+  <div class="use-case">
+    <div class="uc-header">
+      <div class="uc-number">01</div>
+      <div class="uc-header-text">
+        <h2>Competitive Review Mining</h2>
+        <p>Scrape and synthesize public App Store and Reddit feedback from Goodreads and StoryGraph to surface unmet needs and recurring pain points.</p>
+        <div class="uc-tags">
+          <span class="tag tag-source">App Store Reviews</span>
+          <span class="tag tag-source">Reddit · r/books</span>
+          <span class="tag tag-tool">Claude</span>
+          <span class="tag tag-tool">Apify</span>
+          <span class="tag tag-output">Thematic Analysis</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow</h4>
+      <div class="workflow-steps">
+        <div class="wstep">
+          <div class="wstep-box">Apify scrapes reviews</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Filter 1–3★ + keywords</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Batch to Claude API</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Theme clustering</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Insight report</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <h4><span class="badge badge-input"></span>Sample Input · App Store Reviews</h4>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">Goodreads · App Store</span>
+            <span class="stars">★★☆☆☆</span>
+          </div>
+          "I want to journal about what a book made me think, not just check it off a list. There's nowhere to write actual reflections — just shelves and star ratings. Feels like Letterboxd but worse."
+        </div>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">StoryGraph · App Store</span>
+            <span class="stars">★★★☆☆</span>
+          </div>
+          "Love the pace tracking but I wish I could attach notes to specific passages. I highlight constantly on my Kindle but there's no way to pull those in and reflect on them here."
+        </div>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">Goodreads · App Store</span>
+            <span class="stars">★★☆☆☆</span>
+          </div>
+          "Every time I open the app I feel like Amazon is watching me. I don't want my reading data sold to advertisers. I just want a private place to track what I'm reading."
+        </div>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">Reddit · r/books</span>
+            <span class="stars">—</span>
+          </div>
+          "Does anyone else feel like Goodreads is designed for people who want to brag about how many books they read? I read slowly and deeply and none of the metrics mean anything to me."
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4><span class="badge badge-output"></span>AI Output · Synthesized Themes</h4>
+
+        <div class="insight-block">
+          <h5>Primary Theme · Reflection Over Metrics</h5>
+          <p>Users consistently express frustration that both platforms are optimized for reading volume — books completed, pages read, annual goals. Reflective readers feel unseen. The dominant emotional signal is that "tracking" feels reductive. Users want a space to think <em>through</em> a book, not just record that they finished it.</p>
+        </div>
+
+        <div class="insight-block">
+          <h5>Recurring Pain Points</h5>
+          <ul class="theme-list">
+            <li>No annotation or reflection layer — highlights live in Kindle, nowhere to connect them</li>
+            <li>Social pressure feels performative — reading counts and goals create anxiety</li>
+            <li>Privacy concerns about Amazon data ownership in Goodreads</li>
+            <li>Metrics don't map to how deep readers experience books</li>
+            <li>No way to capture cross-book connections or evolving ideas</li>
+          </ul>
+        </div>
+
+        <div class="insight-block">
+          <h5>Signal Strength</h5>
+          <p>Privacy + reflection themes appeared in <strong style="color:var(--amber)">68%</strong> of 1–3★ reviews analyzed. Cross-book connection requests appeared in Reddit threads at <strong style="color:var(--amber)">3.2×</strong> the rate of feature requests for social features.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ USE CASE 2 ══ -->
+  <div class="use-case">
+    <div class="uc-header">
+      <div class="uc-number">02</div>
+      <div class="uc-header-text">
+        <h2>Continuous Signal Pipeline</h2>
+        <p>An automated system that monitors new competitor reviews and Reddit threads on a weekly schedule and routes synthesized insights to a living brief.</p>
+        <div class="uc-tags">
+          <span class="tag tag-source">App Store · Reddit RSS</span>
+          <span class="tag tag-tool">n8n</span>
+          <span class="tag tag-tool">Claude API</span>
+          <span class="tag tag-tool">Notion</span>
+          <span class="tag tag-output">Weekly Digest</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Automated Pipeline Architecture</h4>
+      <div class="workflow-steps">
+        <div class="wstep">
+          <div class="wstep-box">n8n cron trigger</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Fetch new reviews</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Deduplicate</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Claude summarizes</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Push to Notion</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pipeline" style="border-bottom: 1px solid var(--border);">
+      <h4 style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;">Pipeline Nodes</h4>
+
+      <div class="pipeline-row">
+        <div class="pipeline-node">
+          <div class="node-label">Trigger</div>
+          <div class="node-value">Every Monday 8am</div>
+        </div>
+        <div class="pipeline-connector">→</div>
+        <div class="pipeline-node">
+          <div class="node-label">Source A</div>
+          <div class="node-value">Apify: App Store scrape</div>
+        </div>
+        <div class="pipeline-connector">+</div>
+        <div class="pipeline-node">
+          <div class="node-label">Source B</div>
+          <div class="node-value">Reddit API: r/books, r/goodreads</div>
+        </div>
+      </div>
+
+      <div class="pipeline-row">
+        <div class="pipeline-node">
+          <div class="node-label">Filter</div>
+          <div class="node-value">New since last run · 1–3★ only · keyword match</div>
+        </div>
+        <div class="pipeline-connector">→</div>
+        <div class="pipeline-node active">
+          <div class="node-label">AI Processing</div>
+          <div class="node-value">Claude: cluster themes, flag new signals, compare to prior week</div>
+        </div>
+        <div class="pipeline-connector">→</div>
+        <div class="pipeline-node">
+          <div class="node-label">Output</div>
+          <div class="node-value">Notion page + Slack digest</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <h4><span class="badge badge-input"></span>Sample Weekly Input Batch</h4>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">StoryGraph · Week of May 12</span>
+            <span class="stars">★★☆☆☆</span>
+          </div>
+          "I've asked for an export feature for two years. I want to own my data. If the app shuts down I lose everything I've logged."
+        </div>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">Reddit · r/goodreads · May 14</span>
+            <span class="stars">—</span>
+          </div>
+          "Switched to Obsidian for book notes because Goodreads has zero journaling capability. Anyone else doing this? Feels like a workaround I shouldn't need."
+        </div>
+
+        <div class="review-card">
+          <div class="review-meta">
+            <span class="review-source">Goodreads · App Store · May 15</span>
+            <span class="stars">★☆☆☆☆</span>
+          </div>
+          "Why is every recommendation an Amazon affiliate link? I just want to find my next book, not be sold one."
+        </div>
+      </div>
+
+      <div class="panel">
+        <h4><span class="badge badge-output"></span>Weekly Digest Output · Notion</h4>
+
+        <div class="insight-block">
+          <h5>Week of May 12 · Signal Summary</h5>
+          <p>14 new reviews processed. 2 net-new themes identified vs. prior week.</p>
+        </div>
+
+        <div class="insight-block">
+          <h5>🆕 New This Week · Data Portability</h5>
+          <p>First appearance of data export requests as a standalone theme (3 mentions). Previously buried inside general privacy complaints. Users are increasingly framing this as ownership, not just privacy.</p>
+        </div>
+
+        <div class="insight-block">
+          <h5>📈 Trending · Obsidian as Workaround</h5>
+          <p>Second week of Obsidian mentions as a substitute for journaling. Suggests a DIY workaround market forming around the gap ReadLog addresses. Opportunity to position directly against this pattern.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ USE CASE 3 ══ -->
+  <div class="use-case">
+    <div class="uc-header">
+      <div class="uc-number">03</div>
+      <div class="uc-header-text">
+        <h2>Insight-to-Spec Translation</h2>
+        <p>Taking synthesized research output and using AI to generate a prioritized opportunity framework and draft feature brief — closing the loop from raw signal to product artifact.</p>
+        <div class="uc-tags">
+          <span class="tag tag-source">Synthesized Research</span>
+          <span class="tag tag-tool">Claude Projects</span>
+          <span class="tag tag-output">Opportunity Brief</span>
+          <span class="tag tag-output">Feature Spec</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow</h4>
+      <div class="workflow-steps">
+        <div class="wstep">
+          <div class="wstep-box">Load research context</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Claude scores opportunities</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">PM reviews + edits</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Draft spec generated</div>
+          <div class="wstep-arrow">→</div>
+        </div>
+        <div class="wstep">
+          <div class="wstep-box">Stakeholder brief</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panels">
+      <div class="panel">
+        <h4><span class="badge badge-input"></span>Opportunity Prioritization</h4>
+
+        <table class="opp-table">
+          <thead>
+            <tr>
+              <th>Opportunity</th>
+              <th>Signal</th>
+              <th>Priority</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Reflection layer (Sparks)</td>
+              <td>68% of low-rated reviews</td>
+              <td><span class="priority-badge p-high">High</span></td>
+            </tr>
+            <tr>
+              <td>Data ownership + export</td>
+              <td>Trending · wk-over-wk growth</td>
+              <td><span class="priority-badge p-high">High</span></td>
+            </tr>
+            <tr>
+              <td>Kindle highlight import</td>
+              <td>Repeated workaround pattern</td>
+              <td><span class="priority-badge p-med">Medium</span></td>
+            </tr>
+            <tr>
+              <td>Cross-book idea linking</td>
+              <td>Reddit signal · power users</td>
+              <td><span class="priority-badge p-med">Medium</span></td>
+            </tr>
+            <tr>
+              <td>No social feed / opt-out</td>
+              <td>Sentiment signal · not a request</td>
+              <td><span class="priority-badge p-low">Validate</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="panel">
+        <h4><span class="badge badge-output"></span>AI-Drafted Feature Brief</h4>
+
+        <div class="spec-block">
+          <div class="spec-header">
+            <span class="spec-title">Sparks — Reflection Layer</span>
+            <span class="spec-label">v0.1 Draft</span>
+          </div>
+          <div class="spec-body">
+            <div class="spec-row">
+              <span class="spec-row-label">JTBD</span>
+              <span>Capture ideas a book triggers, not just completion status</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">User story</span>
+              <span>As a reflective reader, I want to log thoughts and connections while reading so I can revisit and build on them later</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">Evidence</span>
+              <span>68% of competitor low reviews cite missing reflection capability; Obsidian workaround pattern confirms willingness to build DIY solutions</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">Non-goals</span>
+              <span>Social sharing, public profiles, gamification of any kind</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">Open Qs</span>
+              <span>Attach sparks to page/chapter? Cross-book linking in v1 or v2?</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="spec-block">
+          <div class="spec-header">
+            <span class="spec-title">Data Export</span>
+            <span class="spec-label">v0.1 Draft</span>
+          </div>
+          <div class="spec-body">
+            <div class="spec-row">
+              <span class="spec-row-label">JTBD</span>
+              <span>Own and control my reading history and reflections</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">User story</span>
+              <span>As a privacy-conscious reader, I want to export all my data in a portable format so I'm never locked in</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">Evidence</span>
+              <span>Trending signal in weekly digest; framing shifted from "privacy" to "ownership" — stronger emotional driver</span>
+            </div>
+            <div class="spec-row">
+              <span class="spec-row-label">Format</span>
+              <span>JSON + markdown; Kindle-compatible</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ TRY IT ══ -->
+  <div class="try-it">
+    <h2>Try It Yourself</h2>
+    <p class="sub">Paste any App Store reviews or Reddit comments about a reading app below and get an AI-synthesized insight report. Powered by Claude.</p>
+
+    <div class="try-it-tabs">
+      <button class="try-tab active" onclick="setMode('synthesize')">Synthesize Reviews</button>
+      <button class="try-tab" onclick="setMode('themes')">Extract Themes</button>
+      <button class="try-tab" onclick="setMode('spec')">Draft Feature Brief</button>
+    </div>
+
+    <textarea id="userInput" placeholder="Paste App Store reviews, Reddit comments, or user feedback here...&#10;&#10;Example: &quot;I love tracking my books but wish I could write longer notes about what I learned...&quot;"></textarea>
+
+    <div class="try-controls">
+      <span class="runs-left" id="runsLeft">2 free runs remaining</span>
+      <button class="btn-run" id="runBtn" onclick="runAnalysis()">Analyze →</button>
+    </div>
+
+    <div class="try-output" id="tryOutput"></div>
+  </div>
+
+</main>
+
+<footer>
+  <span>ReadLog · PM Discovery Portfolio · Molly Rankin</span>
+  <span>Synthetic data · Built with Claude API</span>
+</footer>
+
+<script>
+  let currentMode = 'synthesize';
+  let runsUsed = parseInt(localStorage.getItem('rl_runs') || '0');
+  const MAX_RUNS = 2;
+
+  const PROMPTS = {
+    synthesize: (text) => `You are a senior product manager analyzing competitor feedback for ReadLog, a private reading journal app focused on reflection over metrics. Analyze these reviews and produce a structured insight report with: 1) Primary themes (2-3), 2) Key pain points, 3) Unmet needs that ReadLog could address. Be specific and cite signal strength where possible. Keep it concise and actionable.\n\nReviews:\n${text}`,
+    themes: (text) => `You are a product researcher. Extract and cluster the key themes from these user reviews/comments. For each theme: name it, describe it in one sentence, and note how frequently it appears. Format as a clean list. Focus on themes relevant to reading apps, privacy, and personal knowledge management.\n\nReviews:\n${text}`,
+    spec: (text) => `You are a product manager. Based on these user reviews, identify the single strongest product opportunity and draft a concise feature brief with: JTBD, User Story, Evidence from the reviews, Non-goals, and 2 open questions to resolve. Keep each section to 1-2 sentences.\n\nReviews:\n${text}`
+  };
+
+  function setMode(mode) {
+    currentMode = mode;
+    document.querySelectorAll('.try-tab').forEach(t => t.classList.remove('active'));
+    event.target.classList.add('active');
+  }
+
+  function updateRunsUI() {
+    const left = MAX_RUNS - runsUsed;
+    const el = document.getElementById('runsLeft');
+    const btn = document.getElementById('runBtn');
+    if (left <= 0) {
+      el.textContent = 'No runs remaining';
+      btn.disabled = true;
+    } else {
+      el.textContent = `${left} free run${left === 1 ? '' : 's'} remaining`;
+    }
+  }
+
+  async function runAnalysis() {
+    if (runsUsed >= MAX_RUNS) return;
+
+    const input = document.getElementById('userInput').value.trim();
+    if (!input) {
+      alert('Please paste some reviews or feedback first.');
+      return;
+    }
+
+    runsUsed++;
+    localStorage.setItem('rl_runs', runsUsed);
+    updateRunsUI();
+
+    const output = document.getElementById('tryOutput');
+    output.classList.add('visible');
+    output.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+
+    document.getElementById('runBtn').disabled = true;
+
+    try {
+      const response = await fetch('/.netlify/functions/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt: PROMPTS[currentMode](input)
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.error) {
+        output.textContent = 'Something went wrong. Please try again.';
+      } else {
+        output.textContent = data.result;
+      }
+    } catch (err) {
+      output.textContent = 'Unable to connect. Please try again in a moment.';
+    }
+
+    if (runsUsed < MAX_RUNS) {
+      document.getElementById('runBtn').disabled = false;
+    }
+  }
+
+  // Init
+  updateRunsUI();
+</script>
+</body>
+</html>

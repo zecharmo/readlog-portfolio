@@ -1,0 +1,8 @@
+{
+  "name": "readlog-portfolio",
+  "version": "1.0.0",
+  "description": "ReadLog PM Discovery Portfolio — AI-powered competitive research demo",
+  "dependencies": {
+    "@netlify/blobs": "^8.0.0"
+  }
+}
