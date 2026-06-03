@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ReadLog — PM Discovery Portfolio</title>
+  <title>Bookworm — PM Discovery Portfolio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink: #1a1a18;
+      --ink: #212173;
       --paper: #f5f2eb;
       --cream: #ede9df;
-      --amber: #c8873a;
-      --amber-light: #f0d4ae;
-      --amber-pale: #faf4ea;
+      --amber: #FEB796;
+      --amber-light: #fdd9bc;
+      --amber-pale: #fff5ee;
       --sage: #6b7c6e;
       --sage-light: #d4ddd5;
       --rust: #9c4a2b;
@@ -254,7 +254,7 @@
     }
 
     .tag-tool { background: var(--sage-light); color: var(--sage); }
-    .tag-source { background: var(--amber-light); color: #7a4a1a; }
+    .tag-source { background: var(--amber-light); color: #a05a2a; }
     .tag-output { background: #e8e0f0; color: #5a4070; }
 
     /* ── WORKFLOW ── */
@@ -455,8 +455,8 @@
       white-space: nowrap;
     }
 
-    .p-high { background: #ffe0d4; color: var(--rust); }
-    .p-med  { background: var(--amber-light); color: #7a4a1a; }
+    .p-high { background: #ffe0d4; color: #9c4a2b; }
+    .p-med  { background: var(--amber-light); color: #a05a2a; }
     .p-low  { background: var(--sage-light); color: var(--sage); }
 
     /* ── PIPELINE DIAGRAM ── */
@@ -747,15 +747,15 @@
 <!-- ── HEADER ── -->
 <header>
   <div class="header-inner">
-    <div class="eyebrow">PM Discovery Portfolio · Molly Rankin</div>
-    <h1>AI-Powered User Research<br/>for <em>ReadLog</em></h1>
+    <div class="eyebrow">PM Discovery Portfolio · Molly Zechar</div>
+    <h1>AI-Powered User Research<br/>for <em>Bookworm</em></h1>
     <p class="header-desc">
       Three discovery workflows that surface unmet needs from public competitor feedback —
       from raw App Store reviews to a prioritized product opportunity brief.
       Built to demonstrate how modern PMs use AI to compress the signal-to-decision loop.
     </p>
     <div class="header-meta">
-      <span class="meta-pill"><span class="dot"></span> Product: ReadLog PWA</span>
+      <span class="meta-pill"><span class="dot"></span> Product: Bookworm PWA</span>
       <span class="meta-pill"><span class="dot"></span> Sources: App Store · Reddit</span>
       <span class="meta-pill"><span class="dot"></span> Competitors: Goodreads · StoryGraph</span>
       <span class="meta-pill"><span class="dot"></span> Data: Synthetic</span>
@@ -768,7 +768,7 @@
   <div class="context-inner">
     <div class="context-item">
       <h3>Product</h3>
-      <p>ReadLog — a private reading journal for reflective readers who annotate ideas, not metrics.</p>
+      <p>Bookworm — a private reading journal for reflective readers who annotate ideas, not metrics.</p>
     </div>
     <div class="context-item">
       <h3>Target Persona</h3>
@@ -776,7 +776,7 @@
     </div>
     <div class="context-item">
       <h3>Research Question</h3>
-      <p>What unmet needs do Goodreads and StoryGraph users express that ReadLog could address?</p>
+      <p>What unmet needs do Goodreads and StoryGraph users express that Bookworm could address?</p>
     </div>
     <div class="context-item">
       <h3>Methodology</h3>
@@ -1020,7 +1020,7 @@
 
         <div class="insight-block">
           <h5>📈 Trending · Obsidian as Workaround</h5>
-          <p>Second week of Obsidian mentions as a substitute for journaling. Suggests a DIY workaround market forming around the gap ReadLog addresses. Opportunity to position directly against this pattern.</p>
+          <p>Second week of Obsidian mentions as a substitute for journaling. Suggests a DIY workaround market forming around the gap Bookworm addresses. Opportunity to position directly against this pattern.</p>
         </div>
       </div>
     </div>
@@ -1193,7 +1193,7 @@
 </main>
 
 <footer>
-  <span>ReadLog · PM Discovery Portfolio · Molly Rankin</span>
+  <span>Bookworm · PM Discovery Portfolio · Molly Zechar</span>
   <span>Synthetic data · Built with Claude API</span>
 </footer>
 
@@ -1203,7 +1203,7 @@
   const MAX_RUNS = 2;
 
   const PROMPTS = {
-    synthesize: (text) => `You are a senior product manager analyzing competitor feedback for ReadLog, a private reading journal app focused on reflection over metrics. Analyze these reviews and produce a structured insight report with: 1) Primary themes (2-3), 2) Key pain points, 3) Unmet needs that ReadLog could address. Be specific and cite signal strength where possible. Keep it concise and actionable.\n\nReviews:\n${text}`,
+    synthesize: (text) => `You are a senior product manager analyzing competitor feedback for Bookworm, a private reading journal app focused on reflection over metrics. Analyze these reviews and produce a structured insight report with: 1) Primary themes (2-3), 2) Key pain points, 3) Unmet needs that Bookworm could address. Be specific and cite signal strength where possible. Keep it concise and actionable.\n\nReviews:\n${text}`,
     themes: (text) => `You are a product researcher. Extract and cluster the key themes from these user reviews/comments. For each theme: name it, describe it in one sentence, and note how frequently it appears. Format as a clean list. Focus on themes relevant to reading apps, privacy, and personal knowledge management.\n\nReviews:\n${text}`,
     spec: (text) => `You are a product manager. Based on these user reviews, identify the single strongest product opportunity and draft a concise feature brief with: JTBD, User Story, Evidence from the reviews, Non-goals, and 2 open questions to resolve. Keep each section to 1-2 sentences.\n\nReviews:\n${text}`
   };
